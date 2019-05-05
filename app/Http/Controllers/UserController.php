@@ -3,109 +3,83 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\User;
 use App\Address;
 
 class UserController extends Controller
 {
-    public function list_user()
+    public function list_addres()
     {
-        $users=User::orderBy('id')->paginate();
-        return view('list_user',compact('users'));
-    }
-
-    public function register_user()
-    {
-        return view('register_user');
-    }
-
-    public function register_user_data(Request $request)
-    {
-        $this->validate($request,[
-            'name' => 'required|max:10', 
-            'email' => 'required',
-            'password' => 'required'
-        ]);
-        #User::create($request->all());
-        $user = new User;
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->password =bcrypt($request->password);
-        $user->save();
-        return redirect()->route('index')->with('success','Successfully added user');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        #$addres = Address::orderBy('id')->get();
+        #$addres = Address::with("user")->get();
+        $addresses = DB::select('SELECT a.id, a.name, a.country, u.name AS user 
+                                    FROM users AS u, addresses AS a 
+                                    WHERE u.id = a.user_id');
+        return view('list_addres',compact('addresses'));
     }
 
     public function register_addres()
     {
-        $user = User::orderBy('id')->get();
-        return view('register_addres',compact('user'));
+        return view('register_addres');
     }
 
     public function register_addres_data(Request $request)
     {
         $this->validate($request,[
-            'name' => 'required|max:10', 
+            'address' => 'required|max:20', 
             'country' => 'required',
-            'user_id' => 'required'
+            'name' => 'required|max:10', 
+            'email' => 'required',
+            'password' => 'required'
         ]);
-        #User::create($request->all());
+        $user = new User;
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password =bcrypt($request->password);
         $addres = new Address;
-        $addres->name = $request->name;
+        $addres->name = $request->address;
         $addres->country = $request->country;
-        $user = User::find($request->user_id);
+        $user->save();
         $user->address()->save($addres);
-        return redirect()->route('index')->with('success','Successfully added user');
+        return redirect()->route('list_addres')->with('success','Successfully added user');
     }
 
-    public function list_addres()
+    public function edit_addres($id)
     {
-        #$addres = Address::orderBy('id')->get();
-        $addres = Address::with("user")->get();
-        return view('list_addres',compact('addres'));
+        $addresses = Address::with("user")->find($id);
+        $users = User::with("address")->find($addresses->user_id);
+        /*$addresses = DB::select("SELECT a.name, a.country, u.name AS user, u.email 
+                                    FROM users AS u, addresses AS a 
+                                    WHERE u.id = a.user_id
+                                    AND a.id = '$id'");*/
+        return view('edit_addres',compact('addresses','users'));
+    }
+
+    public function edit_addres_data(Request $request, $id)
+    {
+        $this->validate($request,[
+            'address' => 'required|max:20', 
+            'country' => 'required',
+            'name' => 'required|max:10', 
+            'email' => 'required'
+        ]);
+        Address::find($id)->update([
+            'name' => $request->address,
+            'country' => $request->country,
+        ]);
+        $address = Address::with("user")->find($id);
+        User::find($address->user_id)->update([
+            'name' => $request->name,
+            'email' => $request->email,
+        ]);
+        return redirect()->route('list_addres')->with('success','Successfully added user');
+    }
+    
+    public function delete_addres($id)
+    {
+        $address = Address::find($id);
+        $address->user()->delete();
+        return redirect()->route('list_addres')->with('success','Successfully added user');
     }
 }

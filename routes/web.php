@@ -19,9 +19,9 @@
     #$address = App\Address::findOrFail(1);
     #return $address->user;
 });*/
-Route::get('/', 'UserController@list_user')->name('index');
-Route::get('/register-user', 'UserController@register_user')->name('register_user');
-Route::post('/register-user', 'UserController@register_user_data')->name('register_user_data');
+Route::get('/', 'UserController@list_addres')->name('list_addres');
 Route::get('/register-addres', 'UserController@register_addres')->name('register_addres');
 Route::post('/register-addres', 'UserController@register_addres_data')->name('register_addres_data');
-Route::get('/list-addres', 'UserController@list_addres')->name('list_addres');
+Route::get('/edit-addres/{id}', 'UserController@edit_addres')->name('edit_addres');
+Route::post('/edit-addres/{id}', 'UserController@edit_addres_data')->name('edit_addres_data');
+Route::get('/delete-addres/{id}', 'UserController@delete_addres')->name('delete_addres');

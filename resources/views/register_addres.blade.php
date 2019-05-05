@@ -21,11 +21,13 @@
 			@endif
 			<div class="panel panel-primary">
 				<div class="panel-heading">
-					<h3 class="panel-title">New address</h3>
+					<h3 class="panel-title">Form</h3>
 				</div>
 				<div class="panel-body">
 					<form method="POST" action="{{ route('register_addres_data') }}" role="form">
 						{{ csrf_field() }}
+						<label>Dates user</label>
+						<br><br>
 						<div class="row">
 							<div class="form-group">
 				      			<label class="control-label col-sm-2">Name:</label>
@@ -35,20 +37,35 @@
 				    		</div>
 				    		<br><br>
 							<div class="form-group">
-				      			<label class="control-label col-sm-2">Country:</label>
+				      			<label class="control-label col-sm-2">Email:</label>
 				      			<div class="col-sm-10">
-				        			<input type="text" class="form-control" name="country" id="country" placeholder="Writte the country">
+				        			<input type="email" class="form-control" name="email" id="email" placeholder="Writte the email">
 				      			</div>
 				    		</div>
 				    		<br><br>
 				    		<div class="form-group">
-				      			<label class="control-label col-sm-2">User:</label>
+				      			<label class="control-label col-sm-2">Password:</label>
 				      			<div class="col-sm-10">          
-				        			<select class="form-control" name="user_id">
-				        				@foreach($user as $users)
-				        					<option value="{{ $users->id }}">{{ $users->name }}</option>
-				        				@endforeach
-				        			</select>
+				        			<input type="password" class="form-control" name="password" id="password" placeholder="Writte the password">
+				      			</div>
+				    		</div>
+				    		<br>
+				    		<hr>
+				    	</div>
+				    	<label> Date address</label>
+				    	<br><br>
+				    	<div class="row">
+				    		<div class="form-group">
+				      			<label class="control-label col-sm-2">Address:</label>
+				      			<div class="col-sm-10">
+				        			<input type="text" class="form-control" name="address" id="name" placeholder="Writte the name">
+				      			</div>
+				    		</div>
+				    		<br><br>
+							<div class="form-group">
+				      			<label class="control-label col-sm-2">Country:</label>
+				      			<div class="col-sm-10">
+				        			<input type="text" class="form-control" name="country" id="country" placeholder="Writte the country">
 				      			</div>
 				    		</div>
 				    		<br><br>

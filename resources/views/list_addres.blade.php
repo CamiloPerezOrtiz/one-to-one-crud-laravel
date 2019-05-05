@@ -10,44 +10,36 @@
             @endif
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <div class="pull-left"><h3>List users</h3></div>
+                    <div class="pull-left"><h3>List</h3></div>
                     <div class="pull-right">
                         <div class="btn-group">
-                            <a href="{{ route('register_user') }}" class="btn btn-info" >Add user</a>
-                        </div>
-                        <div class="btn-group">
-                            <a href="{{ route('register_addres') }}" class="btn btn-primary" >Add address</a>
-                        </div>
-                        <div class="btn-group">
-                            <a href="{{ route('index') }}" class="btn btn-success" >List users</a>
+                            <a href="{{ route('register_addres') }}" class="btn btn-primary" >Add</a>
                         </div>
                     </div>
                     <div class="table-container">
                         <table class="table table-bordred table-striped">
                             <thead>
-                                <th>Name</th>
-                                <th>Email</th>
+                                <th>Address</th>
+                                <th>Country</th>
                                 <th>User</th>
-                                <th>Editar</th>
-                                <th>Eliminar</th>
+                                <th>Edit</th>
+                                <th>Delete</th>
                             </thead>
                             <tbody>
-                                @foreach($addres as $user)  
+                                @foreach($addresses as $address)  
                                     <tr>
-                                        <td>{{ $user->name }}</td>
-                                        <td>{{ $user->country }}</td>
-                                        <td>{{ $user->user_id }}</td>
+                                        <td>{{ $address->name }}</td>
+                                        <td>{{ $address->country }}</td>
+                                        <td>{{ $address->user }}</td>
                                         <td>
-                                            <a class="btn btn-primary btn-xs" href="#" >
+                                            <a class="btn btn-primary btn-xs" href="{{ route('edit_addres', $address->id) }}" >
                                                 Edit <span class="glyphicon glyphicon-pencil"></span>
                                             </a>
                                         </td>
                                         <td>
-                                            <form action="#" method="post">
-                                                {{csrf_field()}}
-                                                <input name="_method" type="hidden" value="DELETE">
-                                                <button class="btn btn-danger btn-xs" type="submit">Delete <span class="glyphicon glyphicon-trash"></span></button>
-                                            </form>
+                                            <a class="btn btn-danger btn-xs" href="{{ route('delete_addres', $address->id) }}" >
+                                                Delete <span class="glyphicon glyphicon-trash">
+                                            </a>
                                         </td>
                                     </tr>
                                 @endforeach
